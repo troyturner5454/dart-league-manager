@@ -107,16 +107,16 @@ export default function Leaderboard({
 
       <div className="mt-6 grid grid-cols-2 gap-2">
         <CategoryButton
-          label="Most 140s"
-          selected={category === "total140s"}
-          onClick={() => setCategory("total140s")}
-        />
+ 	 label="Most 180s"
+ 	 selected={category === "total180s"}
+	 onClick={() => setCategory("total180s")}
+	/>
 
-        <CategoryButton
-          label="Most 180s"
-          selected={category === "total180s"}
-          onClick={() => setCategory("total180s")}
-        />
+	<CategoryButton
+	  label="Most 140s"
+	  selected={category === "total140s"}
+	  onClick={() => setCategory("total140s")}
+	/>
 
         <CategoryButton
           label="High Score"
