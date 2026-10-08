@@ -12,6 +12,10 @@ type Player = {
 export default function AdminPlayerList() {
   const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
+  const [team, setTeam] = useState("");
+  const [pin, setPin] = useState("");
+  const [message, setMessage] = useState("");
 
   async function loadPlayers() {
     try {
@@ -30,7 +34,98 @@ export default function AdminPlayerList() {
       setLoading(false);
     }
   }
+async function resetPin(
+  playerId: number,
+  playerName: string
+) {
+  const newPin = prompt(
+    `Enter a new PIN for ${playerName}`
+  );
 
+  if (!newPin) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "/api/admin/reset-pin",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          playerId,
+          pin: newPin,
+        }),
+      }
+    );
+
+    const result =
+      await response.json();
+
+    if (!result.success) {
+      alert(
+        result.message ||
+          "Unable to reset PIN."
+      );
+      return;
+    }
+
+    alert(
+      `${playerName}'s PIN was updated successfully.`
+    );
+  } catch {
+    alert("Unable to reset PIN.");
+  }
+}
+async function createPlayer() {
+  setMessage("");
+
+  try {
+    const response = await fetch(
+      "/api/admin/add-player",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          team,
+          pin,
+        }),
+      }
+    );
+
+    const result =
+      await response.json();
+
+    if (!result.success) {
+      setMessage(
+        result.message ||
+          "Unable to create player."
+      );
+      return;
+    }
+
+    setName("");
+    setTeam("");
+    setPin("");
+
+    await loadPlayers();
+
+    setMessage(
+      "Player created successfully."
+    );
+  } catch {
+    setMessage(
+      "Unable to create player."
+    );
+  }
+}
   useEffect(() => {
     loadPlayers();
   }, []);
@@ -46,8 +141,52 @@ export default function AdminPlayerList() {
   return (
     <div className="mt-6">
       <h2 className="mb-4 text-xl font-bold">
-        Players
-      </h2>
+  Add Player
+</h2>
+
+<input
+  value={name}
+  onChange={(e) =>
+    setName(e.target.value)
+  }
+  placeholder="Player Name"
+  className="mb-2 w-full rounded-lg bg-slate-700 p-3"
+/>
+
+<input
+  value={team}
+  onChange={(e) =>
+    setTeam(e.target.value)
+  }
+  placeholder="Team"
+  className="mb-2 w-full rounded-lg bg-slate-700 p-3"
+/>
+
+<input
+  value={pin}
+  onChange={(e) =>
+    setPin(e.target.value)
+  }
+  placeholder="PIN"
+  className="mb-3 w-full rounded-lg bg-slate-700 p-3"
+/>
+
+<button
+  onClick={createPlayer}
+  className="mb-4 w-full rounded-lg bg-red-600 p-3 font-bold"
+>
+  Create Player
+</button>
+
+{message && (
+  <div className="mb-4 rounded-lg bg-slate-700 p-3">
+    {message}
+  </div>
+)}
+
+<h2 className="mb-4 text-xl font-bold">
+  Players
+</h2>
 
       {players.map((player) => (
         <div
@@ -68,6 +207,18 @@ export default function AdminPlayerList() {
               ? "Active"
               : "Inactive"}
           </div>
+	  <button
+  		type="button"
+  		onClick={() =>
+    		resetPin(
+      		player.id,
+      		player.name
+    		)
+  	  }
+  className="mt-2 rounded-lg bg-red-600 px-3 py-2 text-sm font-bold"
+>
+  Reset PIN
+</button>
         </div>
       ))}
     </div>
