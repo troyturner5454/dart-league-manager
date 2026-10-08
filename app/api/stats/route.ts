@@ -26,10 +26,10 @@ export async function POST(request: Request) {
     if (
       score140 < 0 ||
       score180 < 0 ||
-      highScore < 0 ||
-      highScore > 180 ||
-      highCheckout < 0 ||
-      highCheckout > 170
+      (highScore !== 0 &&
+        (highScore < 100 || highScore > 177)) ||
+      (highCheckout !== 0 &&
+        (highCheckout < 100 || highCheckout > 170))
     ) {
       return NextResponse.json(
         {

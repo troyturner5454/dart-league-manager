@@ -143,19 +143,23 @@ export default function DartLeagueApp({
     const numericHighCheckout = Number(highCheckout || 0);
 
     if (
-      numericHighScore < 0 ||
-      numericHighScore > 180
+  	numericHighScore !== 0 &&
+  	(numericHighScore < 101 ||
+    	  numericHighScore > 177)
     ) {
-      setMessage("High Score must be between 0 and 180.");
+      setMessage(
+        "High Score must be between 101 and 177."
+      );
       return;
     }
 
     if (
-      numericHighCheckout < 0 ||
-      numericHighCheckout > 170
+      numericHighCheckout !== 0 &&
+      (numericHighCheckout < 100 ||
+        numericHighCheckout > 170)
     ) {
       setMessage(
-        "High Checkout must be between 0 and 170."
+        "High Checkout must be between 100 and 170."
       );
       return;
     }
@@ -379,13 +383,13 @@ export default function DartLeagueApp({
         </div>
 
         <label className="mb-2 mt-5 block font-semibold">
-          High Score
+          High Score (101-177)
         </label>
 
         <input
           type="number"
-          min="0"
-          max="180"
+          min="101"
+          max="177"
           inputMode="numeric"
           value={highScore}
           onChange={(event) =>
@@ -396,12 +400,12 @@ export default function DartLeagueApp({
         />
 
         <label className="mb-2 mt-5 block font-semibold">
-          High Checkout
+          High Checkout (100-170)
         </label>
 
         <input
           type="number"
-          min="0"
+          min="100"
           max="170"
           inputMode="numeric"
           value={highCheckout}
