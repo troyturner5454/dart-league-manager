@@ -114,69 +114,6 @@ async function togglePlayer(
     alert("Unable to update player.");
   }
 }
-async function editPlayer(
-  playerId: number,
-  currentName: string,
-  currentTeam: string | null
-) {
-  const updatedName = prompt(
-    "Enter the player's name:",
-    currentName
-  );
-
-  if (updatedName === null) {
-    return;
-  }
-
-  const cleanName = updatedName.trim();
-
-  if (!cleanName) {
-    alert("Player name is required.");
-    return;
-  }
-
-  const updatedTeam = prompt(
-    "Enter the player's team:",
-    currentTeam || ""
-  );
-
-  if (updatedTeam === null) {
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      "/api/admin/edit-player",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          playerId,
-          name: cleanName,
-          team: updatedTeam.trim(),
-        }),
-      }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      alert(
-        result.message ||
-          "Unable to edit player."
-      );
-      return;
-    }
-
-    await loadPlayers();
-
-    alert("Player updated successfully.");
-  } catch {
-    alert("Unable to edit player.");
-  }
-}
 async function createPlayer() {
   setMessage("");
 
@@ -304,21 +241,7 @@ async function createPlayer() {
               ? "Active"
               : "Inactive"}
           </div>
-<div className="mt-3 flex flex-wrap gap-2">
-  <button
-    type="button"
-    onClick={() =>
-      editPlayer(
-        player.id,
-        player.name,
-        player.team
-      )
-    }
-    className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-bold"
-  >
-    Edit Player
-  </button>
-
+	  <div className="mt-3 flex flex-wrap gap-2">
   <button
     type="button"
     onClick={() =>
