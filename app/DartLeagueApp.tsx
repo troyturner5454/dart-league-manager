@@ -236,7 +236,7 @@ export default function DartLeagueApp({
         </div>
 
         <h1 className="text-center text-3xl font-bold">
-          TCS Dart League
+          CR Wed Darts
         </h1>
 
         <p className="mt-2 text-center text-slate-400">
@@ -469,7 +469,7 @@ if (
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-bold tracking-widest text-red-500">
-            TCS DART LEAGUE
+            CR WED DARTS
           </p>
 
           <h1 className="mt-2 text-3xl font-bold">
