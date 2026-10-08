@@ -80,40 +80,6 @@ async function resetPin(
     alert("Unable to reset PIN.");
   }
 }
-async function togglePlayer(
-  playerId: number,
-  active: boolean
-) {
-  try {
-    const response = await fetch(
-      "/api/admin/toggle-player",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          playerId,
-          active: !active,
-        }),
-      }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      alert(
-        result.message ||
-          "Unable to update player."
-      );
-      return;
-    }
-
-    await loadPlayers();
-  } catch {
-    alert("Unable to update player.");
-  }
-}
 async function createPlayer() {
   setMessage("");
 
@@ -241,39 +207,18 @@ async function createPlayer() {
               ? "Active"
               : "Inactive"}
           </div>
-	  <div className="mt-3 flex flex-wrap gap-2">
-  <button
-    type="button"
-    onClick={() =>
-      resetPin(
-        player.id,
-        player.name
-      )
-    }
-    className="rounded-lg bg-red-600 px-3 py-2 text-sm font-bold"
-  >
-    Reset PIN
-  </button>
-
-  <button
-    type="button"
-    onClick={() =>
-      togglePlayer(
-        player.id,
-        player.active
-      )
-    }
-    className={
-      player.active
-        ? "rounded-lg bg-yellow-600 px-3 py-2 text-sm font-bold"
-        : "rounded-lg bg-green-600 px-3 py-2 text-sm font-bold"
-    }
-  >
-    {player.active
-      ? "Deactivate"
-      : "Activate"}
-  </button>
-</div>
+	  <button
+  		type="button"
+  		onClick={() =>
+    		resetPin(
+      		player.id,
+      		player.name
+    		)
+  	  }
+  className="mt-2 rounded-lg bg-red-600 px-3 py-2 text-sm font-bold"
+>
+  Reset PIN
+</button>
         </div>
       ))}
     </div>
