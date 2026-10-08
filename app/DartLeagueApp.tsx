@@ -323,64 +323,64 @@ export default function DartLeagueApp({
         </p>
 
         <div className="mt-7 rounded-2xl bg-slate-800 p-5">
-          <p className="text-center text-lg font-semibold">
-            140s
-          </p>
+  <p className="text-center text-lg font-semibold">
+    180s
+  </p>
 
-          <div className="mt-4 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() =>
-                setScore140(Math.max(0, score140 - 1))
-              }
-              className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
-            >
-              −
-            </button>
+  <div className="mt-4 flex items-center justify-between">
+    <button
+      type="button"
+      onClick={() =>
+        setScore180(Math.max(0, score180 - 1))
+      }
+      className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
+    >
+      −
+    </button>
 
-            <span className="text-5xl font-bold">
-              {score140}
-            </span>
+    <span className="text-5xl font-bold">
+      {score180}
+    </span>
 
-            <button
-              type="button"
-              onClick={() => setScore140(score140 + 1)}
-              className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
-            >
-              +
-            </button>
-          </div>
-        </div>
+    <button
+      type="button"
+      onClick={() => setScore180(score180 + 1)}
+      className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
+    >
+      +
+    </button>
+  </div>
+</div>
 
-        <div className="mt-4 rounded-2xl bg-slate-800 p-5">
-          <p className="text-center text-lg font-semibold">
-            180s
-          </p>
+<div className="mt-4 rounded-2xl bg-slate-800 p-5">
+  <p className="text-center text-lg font-semibold">
+    140s
+  </p>
 
-          <div className="mt-4 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() =>
-                setScore180(Math.max(0, score180 - 1))
-              }
-              className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
-            >
-              −
-            </button>
+  <div className="mt-4 flex items-center justify-between">
+    <button
+      type="button"
+      onClick={() =>
+        setScore140(Math.max(0, score140 - 1))
+      }
+      className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
+    >
+      −
+    </button>
 
-            <span className="text-5xl font-bold">
-              {score180}
-            </span>
+    <span className="text-5xl font-bold">
+      {score140}
+    </span>
 
-            <button
-              type="button"
-              onClick={() => setScore180(score180 + 1)}
-              className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
-            >
-              +
-            </button>
-          </div>
-        </div>
+    <button
+      type="button"
+      onClick={() => setScore140(score140 + 1)}
+      className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
+    >
+      +
+    </button>
+  </div>
+</div>
 
         <label className="mb-2 mt-5 block font-semibold">
           High Score (101-177)
@@ -490,13 +490,13 @@ if (
 
       <div className="mt-4 grid grid-cols-2 gap-3">
         <StatCard
-          value={playerStats.total140s}
-          label="140s"
-        />
-
-        <StatCard
           value={playerStats.total180s}
           label="180s"
+        />
+
+	<StatCard
+          value={playerStats.total140s}
+          label="140s"
         />
 
         <StatCard
