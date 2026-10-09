@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Leaderboard from "./Leaderboard";
+import MatchHistory from "./MatchHistory";
 
 type Player = {
   id: number;
@@ -45,7 +46,11 @@ export default function DartLeagueApp({
     useState<PlayerStats>(emptyStats);
 
   const [screen, setScreen] = useState<
-    "login" | "dashboard" | "entry" | "leaderboard"
+    | "login"
+    | "dashboard"
+    | "entry"
+    | "leaderboard"
+    | "history"
   >("login");
 
   const [score140, setScore140] = useState(0);
@@ -460,6 +465,22 @@ if (
   );
 }
 
+if (
+  screen === "history" &&
+  loggedInPlayer
+) {
+  return (
+    <MatchHistory
+      playerId={loggedInPlayer.id}
+      playerName={loggedInPlayer.name}
+      onBack={() => {
+        setMessage("");
+        setScreen("dashboard");
+      }}
+    />
+  );
+}
+
   if (!loggedInPlayer) {
     return null;
   }
@@ -539,6 +560,17 @@ if (
       >
         View Leaderboard
       </button>
+
+	<button
+	  type="button"
+	  onClick={() => {
+	    setMessage("");
+	    setScreen("history");
+	  }}
+	  className="mt-3 w-full rounded-xl border border-slate-600 bg-slate-800 p-4 font-semibold"
+	>
+	  View Match History
+	</button>
 
       <button
         type="button"
