@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import AdminPlayerList from "./AdminPlayerList";
+import AdminMatchHistory from "./AdminMatchHistory";
 
 export default function AdminLogin() {
   const [pin, setPin] = useState("");
@@ -76,6 +77,7 @@ export default function AdminLogin() {
         </div>
 
        <AdminPlayerList />
+       <AdminMatchHistory />
 
         <button
           type="button"
