@@ -11,8 +11,10 @@ type Player = {
 };
 
 type PlayerStats = {
-  total140s: number;
   total180s: number;
+  total140s: number;
+  total171s: number;
+  total133s: number;
   highScore: number;
   highCheckout: number;
   matchesRecorded: number;
@@ -23,8 +25,10 @@ type DartLeagueAppProps = {
 };
 
 const emptyStats: PlayerStats = {
-  total140s: 0,
   total180s: 0,
+  total140s: 0,
+  total171s: 0,
+  total133s: 0,
   highScore: 0,
   highCheckout: 0,
   matchesRecorded: 0,
@@ -336,8 +340,10 @@ export default function DartLeagueApp({
         <p className="mt-1 text-slate-400">
           Player: {loggedInPlayer.name}
         </p>
+	
+	<div className="mt-7 grid grid-cols-2 gap-3">
+        <div className="rounded-2xl bg-slate-800 p-4">
 
-        <div className="mt-7 rounded-2xl bg-slate-800 p-5">
   <p className="text-center text-lg font-semibold">
     180s
   </p>
@@ -348,26 +354,26 @@ export default function DartLeagueApp({
       onClick={() =>
         setScore180(Math.max(0, score180 - 1))
       }
-      className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
+      className="h-12 w-12 rounded-xl bg-slate-700 text-2xl font-bold"
     >
       −
     </button>
 
-    <span className="text-5xl font-bold">
+    <span className="text-3xl font-bold">
       {score180}
     </span>
 
     <button
       type="button"
       onClick={() => setScore180(score180 + 1)}
-      className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
+      className="h-12 w-12 rounded-xl bg-red-600 text-2xl font-bold"
     >
       +
     </button>
   </div>
 </div>
 
-<div className="mt-4 rounded-2xl bg-slate-800 p-5">
+<div className="rounded-2xl bg-slate-800 p-4">
   <p className="text-center text-lg font-semibold">
     140s
   </p>
@@ -378,26 +384,26 @@ export default function DartLeagueApp({
       onClick={() =>
         setScore140(Math.max(0, score140 - 1))
       }
-      className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
+      className="h-12 w-12 rounded-xl bg-slate-700 text-2xl font-bold"
     >
       −
     </button>
 
-    <span className="text-5xl font-bold">
+    <span className="text-3xl font-bold">
       {score140}
     </span>
 
     <button
       type="button"
       onClick={() => setScore140(score140 + 1)}
-      className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
+      className="h-12 w-12 rounded-xl bg-red-600 text-2xl font-bold"
     >
       +
     </button>
   </div>
 </div>
 
-<div className="mt-4 rounded-2xl bg-slate-800 p-5">
+<div className="rounded-2xl bg-slate-800 p-4">
   <p className="text-center text-lg font-semibold">
     171s
   </p>
@@ -408,12 +414,12 @@ export default function DartLeagueApp({
       onClick={() =>
         setScore171(Math.max(0, score171 - 1))
       }
-      className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
+      className="h-12 w-12 rounded-xl bg-slate-700 text-2xl font-bold"
     >
       −
     </button>
 
-    <span className="text-5xl font-bold">
+    <span className="text-3xl font-bold">
       {score171}
     </span>
 
@@ -422,14 +428,14 @@ export default function DartLeagueApp({
       onClick={() =>
         setScore171(score171 + 1)
       }
-      className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
+      className="h-12 w-12 rounded-xl bg-red-600 text-2xl font-bold"
     >
       +
     </button>
   </div>
 </div>
 
-<div className="mt-4 rounded-2xl bg-slate-800 p-5">
+<div className="rounded-2xl bg-slate-800 p-4">
   <p className="text-center text-lg font-semibold">
     133s
   </p>
@@ -440,12 +446,12 @@ export default function DartLeagueApp({
       onClick={() =>
         setScore133(Math.max(0, score133 - 1))
       }
-      className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
+      className="h-12 w-12 rounded-xl bg-slate-700 text-2xl font-bold"
     >
       −
     </button>
 
-    <span className="text-5xl font-bold">
+    <span className="text-3xl font-bold">
       {score133}
     </span>
 
@@ -454,13 +460,13 @@ export default function DartLeagueApp({
       onClick={() =>
         setScore133(score133 + 1)
       }
-      className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
+      className="h-12 w-12 rounded-xl bg-red-600 text-2xl font-bold"
     >
       +
     </button>
   </div>
 </div>
-
+</div>
         <label className="mb-2 mt-5 block font-semibold">
           High Score (100-177)
         </label>
@@ -584,25 +590,35 @@ if (
       </h2>
 
       <div className="mt-4 grid grid-cols-2 gap-3">
-        <StatCard
-          value={playerStats.total180s}
-          label="180s"
-        />
+  	<StatCard
+    	  value={playerStats.total180s}
+    	  label="180s"
+  	/>
 
-	<StatCard
-          value={playerStats.total140s}
-          label="140s"
-        />
+  	<StatCard
+    	  value={playerStats.total140s}
+    	  label="140s"
+  	/>
 
-        <StatCard
-          value={playerStats.highScore}
-          label="High Score"
-        />
+  	<StatCard
+    	  value={playerStats.total171s}
+    	  label="171s"
+  	/>
 
-        <StatCard
-          value={playerStats.highCheckout}
-          label="High Checkout"
-        />
+  	<StatCard
+    	  value={playerStats.total133s}
+    	  label="133s"
+  	/>
+
+  	<StatCard
+    	  value={playerStats.highScore}
+    	  label="High Score"
+  	/>
+
+  	<StatCard
+    	  value={playerStats.highCheckout}
+    	  label="High Checkout"
+  	/>
       </div>
 
       <div className="mt-4 flex justify-between rounded-xl bg-slate-950 p-4 text-slate-300">

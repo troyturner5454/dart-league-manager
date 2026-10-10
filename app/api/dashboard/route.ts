@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   const { data: stats, error } = await supabase
     .from("stats")
     .select(
-      "score140, score180, high_score, high_checkout"
+      "score180, score140, score171, score133, high_score, high_checkout"
     )
     .eq("player_id", playerId);
 
@@ -48,6 +48,18 @@ export async function GET(request: Request) {
       0
     ) || 0;
 
+  const total171s =
+    stats?.reduce(
+      (total, row) => total + (row.score171 || 0),
+      0
+    ) || 0;
+
+  const total133s =
+    stats?.reduce(
+      (total, row) => total + (row.score133 || 0),
+      0
+    ) || 0;
+
   const highScore =
     stats && stats.length > 0
       ? Math.max(...stats.map((row) => row.high_score || 0))
@@ -63,8 +75,10 @@ export async function GET(request: Request) {
   return NextResponse.json({
     success: true,
     stats: {
-      total140s,
       total180s,
+      total140s,
+      total171s,
+      total133s,
       highScore,
       highCheckout,
       matchesRecorded: stats?.length || 0,

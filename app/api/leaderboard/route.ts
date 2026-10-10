@@ -9,8 +9,10 @@ type PlayerRow = {
 
 type StatRow = {
   player_id: number;
-  score140: number | null;
   score180: number | null;
+  score140: number | null;
+  score171: number | null;
+  score133: number | null;
   high_score: number | null;
   high_checkout: number | null;
 };
@@ -37,7 +39,7 @@ export async function GET() {
     await supabase
       .from("stats")
       .select(
-        "player_id, score140, score180, high_score, high_checkout"
+        "player_id, score180, score140, score171, score133, high_score, high_checkout"
       );
 
   if (statsError) {
@@ -66,6 +68,18 @@ export async function GET() {
         0
       );
 
+      const total171s = playerStats.reduce(
+	(total, stat) =>
+    	total + (stat.score171 || 0),
+  	0
+      );
+
+      const total133s = playerStats.reduce(
+	(total, stat) =>
+    	total + (stat.score133 || 0),
+  	0
+      );
+
       const highScore =
         playerStats.length > 0
           ? Math.max(
@@ -85,13 +99,15 @@ export async function GET() {
           : 0;
 
       return {
-        playerId: player.id,
-        name: player.name,
-        team: player.team,
-        total140s,
-        total180s,
-        highScore,
-        highCheckout,
+  	playerId: player.id,
+	name: player.name,
+  	team: player.team,
+  	total180s,
+  	total140s,
+  	total171s,
+  	total133s,
+  	highScore,
+  	highCheckout,
       };
     }
   );

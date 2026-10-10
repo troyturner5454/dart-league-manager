@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     const { data: history, error } = await supabase
       .from("stats")
       .select(
-        "id, match_date, score180, score140, high_score, high_checkout, created_at"
+  	"id, match_date, score180, score140, score171, score133, high_score, high_checkout, created_at"
       )
       .eq("player_id", playerId)
       .order("match_date", {

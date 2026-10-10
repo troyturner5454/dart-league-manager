@@ -6,15 +6,19 @@ type Player = {
   playerId: number;
   name: string;
   team: string | null;
-  total140s: number;
   total180s: number;
+  total140s: number;
+  total171s: number;
+  total133s: number;
   highScore: number;
   highCheckout: number;
 };
 
 type Category =
-  | "total140s"
   | "total180s"
+  | "total140s"
+  | "total171s"
+  | "total133s"
   | "highScore"
   | "highCheckout";
 
@@ -75,8 +79,10 @@ export default function Leaderboard({
   });
 
   const labels: Record<Category, string> = {
-    total140s: "140s",
-    total180s: "180s",
+    total140s: "180s",
+    total180s: "140s",
+    total171s: "171s",
+    total133s: "133s",
     highScore: "High Score",
     highCheckout: "High Checkout",
   };
@@ -116,6 +122,18 @@ export default function Leaderboard({
 	  label="Most 140s"
 	  selected={category === "total140s"}
 	  onClick={() => setCategory("total140s")}
+	/>
+
+	<CategoryButton
+	  label="Most 171s"
+	  selected={category === "total171s"}
+	  onClick={() => setCategory("total171s")}
+	/>
+
+	<CategoryButton
+	  label="Most 133s"
+	  selected={category === "total133s"}
+	  onClick={() => setCategory("total133s")}
 	/>
 
         <CategoryButton

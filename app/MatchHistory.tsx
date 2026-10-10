@@ -7,6 +7,8 @@ type HistoryEntry = {
   match_date: string;
   score180: number;
   score140: number;
+  score171: number;
+  score133: number;
   high_score: number;
   high_checkout: number;
   created_at: string;
@@ -158,6 +160,16 @@ export default function MatchHistory({
                     label="140s"
                     value={entry.score140}
                   />
+
+		  <HistoryStat
+		  label="171s"
+		  value={entry.score171}
+		  />
+
+		  <HistoryStat
+		  label="133s"
+		  value={entry.score133}
+		  />
 
                   <HistoryStat
                     label="High Score"
