@@ -6,10 +6,8 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     const playerId = Number(body.playerId);
-    const score180 = Number(body.score180);
     const score140 = Number(body.score140);
-    const score171 = Number(body.score171);
-    const score133 = Number(body.score133);
+    const score180 = Number(body.score180);
     const highScore = Number(body.highScore);
     const highCheckout = Number(body.highCheckout);
 
@@ -26,10 +24,8 @@ export async function POST(request: Request) {
     }
 
     if (
-      score180 < 0 ||
       score140 < 0 ||
-      score171 < 0 ||
-      score133 < 0 ||
+      score180 < 0 ||
       (highScore !== 0 &&
         (highScore < 100 || highScore > 177)) ||
       (highCheckout !== 0 &&
@@ -59,10 +55,8 @@ export async function POST(request: Request) {
         {
           player_id: playerId,
           match_date: matchDate,
+          score140: score140,
           score180: score180,
-	  score140: score140,
-	  score171: score171,
-	  score133: score133,
           high_score: highScore,
           high_checkout: highCheckout,
         },

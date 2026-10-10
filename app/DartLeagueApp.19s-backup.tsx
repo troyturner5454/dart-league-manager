@@ -53,10 +53,8 @@ export default function DartLeagueApp({
     | "history"
   >("login");
 
-  const [score180, setScore180] = useState(0);
   const [score140, setScore140] = useState(0);
-  const [score171, setScore171] = useState(0);
-  const [score133, setScore133] = useState(0);
+  const [score180, setScore180] = useState(0);
   const [highScore, setHighScore] = useState("");
   const [highCheckout, setHighCheckout] = useState("");
 
@@ -133,10 +131,8 @@ export default function DartLeagueApp({
   }
 
   function openStatEntry() {
-    setScore180(0);
     setScore140(0);
-    setScore171(0);
-    setScore133(0);
+    setScore180(0);
     setHighScore("");
     setHighCheckout("");
     setMessage("");
@@ -174,10 +170,8 @@ export default function DartLeagueApp({
     }
 
     if (
-      score180 === 0 &&
       score140 === 0 &&
-      score171 === 0 &&
-      score133 === 0 &&
+      score180 === 0 &&
       numericHighScore === 0 &&
       numericHighCheckout === 0
     ) {
@@ -197,14 +191,12 @@ export default function DartLeagueApp({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-	  playerId: loggedInPlayer.id,
-	  score180,
-	  score140,
-	  score171,
-	  score133,
-	  highScore: numericHighScore,
-	  highCheckout: numericHighCheckout,
-	}),
+          playerId: loggedInPlayer.id,
+          score140,
+          score180,
+          highScore: numericHighScore,
+          highCheckout: numericHighCheckout,
+        }),
       });
 
       const result = await response.json();
@@ -218,10 +210,8 @@ export default function DartLeagueApp({
 
       await loadDashboardStats(loggedInPlayer.id);
 
-      setScore180(0);
       setScore140(0);
-      setScore171(0);
-      setScore133(0);
+      setScore180(0);
       setHighScore("");
       setHighCheckout("");
 
@@ -397,77 +387,13 @@ export default function DartLeagueApp({
   </div>
 </div>
 
-<div className="mt-4 rounded-2xl bg-slate-800 p-5">
-  <p className="text-center text-lg font-semibold">
-    171s
-  </p>
-
-  <div className="mt-4 flex items-center justify-between">
-    <button
-      type="button"
-      onClick={() =>
-        setScore171(Math.max(0, score171 - 1))
-      }
-      className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
-    >
-      −
-    </button>
-
-    <span className="text-5xl font-bold">
-      {score171}
-    </span>
-
-    <button
-      type="button"
-      onClick={() =>
-        setScore171(score171 + 1)
-      }
-      className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
-    >
-      +
-    </button>
-  </div>
-</div>
-
-<div className="mt-4 rounded-2xl bg-slate-800 p-5">
-  <p className="text-center text-lg font-semibold">
-    133s
-  </p>
-
-  <div className="mt-4 flex items-center justify-between">
-    <button
-      type="button"
-      onClick={() =>
-        setScore133(Math.max(0, score133 - 1))
-      }
-      className="h-14 w-20 rounded-xl bg-slate-700 text-3xl font-bold"
-    >
-      −
-    </button>
-
-    <span className="text-5xl font-bold">
-      {score133}
-    </span>
-
-    <button
-      type="button"
-      onClick={() =>
-        setScore133(score133 + 1)
-      }
-      className="h-14 w-20 rounded-xl bg-red-600 text-3xl font-bold"
-    >
-      +
-    </button>
-  </div>
-</div>
-
         <label className="mb-2 mt-5 block font-semibold">
-          High Score (100-177)
+          High Score (101-177)
         </label>
 
         <input
           type="number"
-          min="100"
+          min="101"
           max="177"
           inputMode="numeric"
           value={highScore}
