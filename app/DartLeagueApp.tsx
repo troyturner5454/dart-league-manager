@@ -348,25 +348,25 @@ export default function DartLeagueApp({
     180s
   </p>
 
-  <div className="mt-4 flex items-center justify-between">
+  <div className="mt-4 flex items-center justify-between items-center gap-2">
     <button
       type="button"
       onClick={() =>
         setScore180(Math.max(0, score180 - 1))
       }
-      className="h-12 w-12 rounded-xl bg-slate-700 text-2xl font-bold"
+      className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
     >
       −
     </button>
 
-    <span className="text-3xl font-bold">
+    <span className="text-center text-3xl font-bold">
       {score180}
     </span>
 
     <button
       type="button"
       onClick={() => setScore180(score180 + 1)}
-      className="h-12 w-12 rounded-xl bg-red-600 text-2xl font-bold"
+      className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
     >
       +
     </button>
@@ -378,25 +378,25 @@ export default function DartLeagueApp({
     140s
   </p>
 
-  <div className="mt-4 flex items-center justify-between">
+  <div className="mt-4 flex items-center justify-between items-center gap-2">
     <button
       type="button"
       onClick={() =>
         setScore140(Math.max(0, score140 - 1))
       }
-      className="h-12 w-12 rounded-xl bg-slate-700 text-2xl font-bold"
+      className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
     >
       −
     </button>
 
-    <span className="text-3xl font-bold">
+    <span className="text-center text-3xl font-bold">
       {score140}
     </span>
 
     <button
       type="button"
       onClick={() => setScore140(score140 + 1)}
-      className="h-12 w-12 rounded-xl bg-red-600 text-2xl font-bold"
+      className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
     >
       +
     </button>
@@ -408,18 +408,18 @@ export default function DartLeagueApp({
     171s
   </p>
 
-  <div className="mt-4 flex items-center justify-between">
+  <div className="mt-4 flex items-center justify-between items-center gap-2">
     <button
       type="button"
       onClick={() =>
         setScore171(Math.max(0, score171 - 1))
       }
-      className="h-12 w-12 rounded-xl bg-slate-700 text-2xl font-bold"
+      className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
     >
       −
     </button>
 
-    <span className="text-3xl font-bold">
+    <span className="text-center text-3xl font-bold">
       {score171}
     </span>
 
@@ -428,7 +428,7 @@ export default function DartLeagueApp({
       onClick={() =>
         setScore171(score171 + 1)
       }
-      className="h-12 w-12 rounded-xl bg-red-600 text-2xl font-bold"
+      className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
     >
       +
     </button>
@@ -440,18 +440,18 @@ export default function DartLeagueApp({
     133s
   </p>
 
-  <div className="mt-4 flex items-center justify-between">
+  <div className="mt-4 flex items-center justify-between items-center gap-2">
     <button
       type="button"
       onClick={() =>
         setScore133(Math.max(0, score133 - 1))
       }
-      className="h-12 w-12 rounded-xl bg-slate-700 text-2xl font-bold"
+      className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
     >
       −
     </button>
 
-    <span className="text-3xl font-bold">
+    <span className="text-center text-3xl font-bold">
       {score133}
     </span>
 
@@ -460,7 +460,7 @@ export default function DartLeagueApp({
       onClick={() =>
         setScore133(score133 + 1)
       }
-      className="h-12 w-12 rounded-xl bg-red-600 text-2xl font-bold"
+      className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
     >
       +
     </button>
