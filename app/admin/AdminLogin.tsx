@@ -10,9 +10,7 @@ export default function AdminLogin() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  async function handleLogin(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setLoading(true);
@@ -30,18 +28,14 @@ export default function AdminLogin() {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        setMessage(
-          result.message || "Admin login failed."
-        );
+        setMessage(result.message || "Admin login failed.");
         return;
       }
 
       setPin("");
       setLoggedIn(true);
     } catch {
-      setMessage(
-        "Could not connect to the admin login service."
-      );
+      setMessage("Could not connect to the admin login service.");
     } finally {
       setLoading(false);
     }
@@ -68,16 +62,41 @@ export default function AdminLogin() {
           CR WED DARTS
         </p>
 
-        <h1 className="mt-2 text-3xl font-bold">
-          Admin Dashboard
-        </h1>
+        <h1 className="mt-2 text-3xl font-bold">Admin Dashboard</h1>
 
         <div className="mt-6 rounded-2xl bg-green-950 p-5 text-green-200">
           Admin login works successfully.
         </div>
 
-       <AdminPlayerList />
-       <AdminMatchHistory />
+        <div className="sticky top-2 z-20 mt-6 grid grid-cols-2 gap-3 rounded-xl bg-slate-900 p-2 shadow-lg">
+          <button
+            type="button"
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }}
+            className="rounded-xl bg-blue-600 p-3 font-bold"
+          >
+            Players
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              document.getElementById("match-history")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+            className="rounded-xl bg-purple-600 p-3 font-bold"
+          >
+            Match History
+          </button>
+        </div>
+
+        <AdminPlayerList />
+        <AdminMatchHistory />
 
         <button
           type="button"
@@ -100,9 +119,7 @@ export default function AdminLogin() {
 
   return (
     <section className="w-full max-w-md rounded-3xl bg-slate-900 p-8 text-white shadow-2xl">
-      <div className="text-center text-6xl">
-        🔐
-      </div>
+      <div className="text-center text-6xl">🔐</div>
 
       <h1 className="mt-3 text-center text-3xl font-bold">
         CR Wed Darts Admin
@@ -113,10 +130,7 @@ export default function AdminLogin() {
       </p>
 
       <form onSubmit={handleLogin} className="mt-8">
-        <label
-          htmlFor="adminPin"
-          className="mb-2 block font-semibold"
-        >
+        <label htmlFor="adminPin" className="mb-2 block font-semibold">
           Admin PIN
         </label>
 
