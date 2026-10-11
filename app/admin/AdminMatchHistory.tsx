@@ -92,6 +92,41 @@ export default function AdminMatchHistory() {
     }
   }
 
+  async function deleteEntry(entry: HistoryEntry) {
+    const confirmed = window.confirm(
+      `Delete ${entry.player_name}'s match entry for ${formatDate(entry.match_date)}?`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/admin/delete-match", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          entryId: entry.id,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        alert(result.message || "Unable to delete match entry.");
+        return;
+      }
+
+      await loadHistory();
+
+      alert("Match entry deleted successfully.");
+    } catch {
+      alert("Unable to delete match entry.");
+    }
+  }
+
   useEffect(() => {
     loadHistory();
   }, []);
@@ -182,13 +217,23 @@ export default function AdminMatchHistory() {
                   value={entry.high_checkout}
                 />{" "}
               </div>{" "}
-              <button
-                type="button"
-                onClick={() => editEntry(entry)}
-                className="mt-3 w-full rounded-lg bg-blue-600 px-4 py-3 font-bold"
-              >
-                Edit Entry
-              </button>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => editEntry(entry)}
+                  className="rounded-lg bg-blue-600 px-4 py-3 font-bold"
+                >
+                  Edit Entry
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => deleteEntry(entry)}
+                  className="rounded-lg bg-red-600 px-4 py-3 font-bold"
+                >
+                  Delete Entry
+                </button>
+              </div>
             </div>
           ))}{" "}
         </div>
