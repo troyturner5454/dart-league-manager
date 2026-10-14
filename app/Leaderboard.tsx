@@ -32,8 +32,7 @@ export default function Leaderboard({
   onBack,
 }: LeaderboardProps) {
   const [players, setPlayers] = useState<Player[]>([]);
-  const [category, setCategory] =
-    useState<Category>("total180s");
+  const [category, setCategory] = useState<Category>("total180s");
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -50,9 +49,7 @@ export default function Leaderboard({
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        setError(
-          result.message || "Could not load leaderboard."
-        );
+        setError(result.message || "Could not load leaderboard.");
         return;
       }
 
@@ -79,8 +76,8 @@ export default function Leaderboard({
   });
 
   const labels: Record<Category, string> = {
-    total140s: "180s",
-    total180s: "140s",
+    total180s: "180s",
+    total140s: "140s",
     total171s: "171s",
     total133s: "133s",
     highScore: "High Score",
@@ -103,9 +100,7 @@ export default function Leaderboard({
             LIVE STANDINGS
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold">
-            Leaderboard
-          </h1>
+          <h1 className="mt-2 text-3xl font-bold">Leaderboard</h1>
         </div>
 
         <div className="text-5xl">🏆</div>
@@ -113,28 +108,28 @@ export default function Leaderboard({
 
       <div className="mt-6 grid grid-cols-2 gap-2">
         <CategoryButton
- 	 label="Most 180s"
- 	 selected={category === "total180s"}
-	 onClick={() => setCategory("total180s")}
-	/>
+          label="Most 180s"
+          selected={category === "total180s"}
+          onClick={() => setCategory("total180s")}
+        />
 
-	<CategoryButton
-	  label="Most 140s"
-	  selected={category === "total140s"}
-	  onClick={() => setCategory("total140s")}
-	/>
+        <CategoryButton
+          label="Most 140s"
+          selected={category === "total140s"}
+          onClick={() => setCategory("total140s")}
+        />
 
-	<CategoryButton
-	  label="Most 171s"
-	  selected={category === "total171s"}
-	  onClick={() => setCategory("total171s")}
-	/>
+        <CategoryButton
+          label="Most 171s"
+          selected={category === "total171s"}
+          onClick={() => setCategory("total171s")}
+        />
 
-	<CategoryButton
-	  label="Most 133s"
-	  selected={category === "total133s"}
-	  onClick={() => setCategory("total133s")}
-	/>
+        <CategoryButton
+          label="Most 133s"
+          selected={category === "total133s"}
+          onClick={() => setCategory("total133s")}
+        />
 
         <CategoryButton
           label="High Score"
@@ -150,9 +145,7 @@ export default function Leaderboard({
       </div>
 
       <div className="mt-6 flex items-center justify-between">
-        <h2 className="text-xl font-bold">
-          {labels[category]}
-        </h2>
+        <h2 className="text-xl font-bold">{labels[category]}</h2>
 
         <button
           type="button"
@@ -170,16 +163,13 @@ export default function Leaderboard({
       )}
 
       {error && (
-        <p className="mt-5 rounded-xl bg-red-950 p-4 text-red-200">
-          {error}
-        </p>
+        <p className="mt-5 rounded-xl bg-red-950 p-4 text-red-200">{error}</p>
       )}
 
       {!loading && !error && (
         <div className="mt-4 space-y-3">
           {sortedPlayers.map((player, index) => {
-            const isCurrentPlayer =
-              player.playerId === currentPlayerId;
+            const isCurrentPlayer = player.playerId === currentPlayerId;
 
             return (
               <div
@@ -208,13 +198,9 @@ export default function Leaderboard({
                 </div>
 
                 <div className="text-right">
-                  <p className="text-3xl font-bold">
-                    {player[category]}
-                  </p>
+                  <p className="text-3xl font-bold">{player[category]}</p>
 
-                  <p className="text-xs text-slate-400">
-                    {labels[category]}
-                  </p>
+                  <p className="text-xs text-slate-400">{labels[category]}</p>
                 </div>
               </div>
             );
