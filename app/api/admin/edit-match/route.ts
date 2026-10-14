@@ -1,22 +1,15 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { leagueConfig } from "../../../../lib/leagueConfig";
+import { ADMIN_COOKIE_NAME, verifyAdminToken } from "../../../../lib/adminAuth";
 
-import {
-  ADMIN_COOKIE_NAME,
-  verifyAdminToken,
-} from "../../../../lib/adminAuth";
-
-import {
-  supabaseAdmin,
-} from "../../../../lib/supabaseAdmin";
+import { supabaseAdmin } from "../../../../lib/supabaseAdmin";
 
 export async function POST(request: Request) {
   try {
     const cookieStore = await cookies();
 
-    const adminToken = cookieStore.get(
-      ADMIN_COOKIE_NAME
-    )?.value;
+    const adminToken = cookieStore.get(ADMIN_COOKIE_NAME)?.value;
 
     if (!verifyAdminToken(adminToken)) {
       return NextResponse.json(
@@ -26,7 +19,7 @@ export async function POST(request: Request) {
         },
         {
           status: 401,
-        }
+        },
       );
     }
 
@@ -38,9 +31,7 @@ export async function POST(request: Request) {
     const score171 = Number(body.score171);
     const score133 = Number(body.score133);
     const highScore = Number(body.highScore);
-    const highCheckout = Number(
-      body.highCheckout
-    );
+    const highCheckout = Number(body.highCheckout);
 
     if (!entryId) {
       return NextResponse.json(
@@ -50,7 +41,7 @@ export async function POST(request: Request) {
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
@@ -67,52 +58,53 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
-          message:
-            "Dart counters must be whole numbers of zero or greater.",
+          message: "Dart counters must be whole numbers of zero or greater.",
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
     if (
       highScore !== 0 &&
-      (highScore < 100 || highScore > 177)
+      (highScore < leagueConfig.minHighScore ||
+        highScore > leagueConfig.maxHighScore)
     ) {
       return NextResponse.json(
         {
           success: false,
           message:
-            "High Score must be zero or between 100 and 177.",
+            `High Score must be zero or between ` +
+            `${leagueConfig.minHighScore} and ` +
+            `${leagueConfig.maxHighScore}.`,
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
     if (
       highCheckout !== 0 &&
-      (highCheckout < 100 ||
-        highCheckout > 170)
+      (highCheckout < leagueConfig.minHighCheckout ||
+        highCheckout > leagueConfig.maxHighCheckout)
     ) {
       return NextResponse.json(
         {
           success: false,
           message:
-            "High Checkout must be zero or between 100 and 170.",
+            `High Checkout must be zero or between ` +
+            `${leagueConfig.minHighCheckout} and ` +
+            `${leagueConfig.maxHighCheckout}.`,
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
-    const {
-      data: updatedEntry,
-      error,
-    } = await supabaseAdmin
+    const { data: updatedEntry, error } = await supabaseAdmin
       .from("stats")
       .update({
         score180,
@@ -134,7 +126,7 @@ export async function POST(request: Request) {
         },
         {
           status: 500,
-        }
+        },
       );
     }
 
@@ -146,7 +138,7 @@ export async function POST(request: Request) {
         },
         {
           status: 404,
-        }
+        },
       );
     }
 
@@ -158,12 +150,11 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        message:
-          "The match entry could not be updated.",
+        message: "The match entry could not be updated.",
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }

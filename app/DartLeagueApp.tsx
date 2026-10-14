@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Leaderboard from "./Leaderboard";
 import MatchHistory from "./MatchHistory";
+import { leagueConfig } from "../lib/leagueConfig";
 
 type Player = {
   id: number;
@@ -34,27 +35,18 @@ const emptyStats: PlayerStats = {
   matchesRecorded: 0,
 };
 
-export default function DartLeagueApp({
-  players,
-}: DartLeagueAppProps) {
-  const [selectedPlayerId, setSelectedPlayerId] =
-    useState("");
+export default function DartLeagueApp({ players }: DartLeagueAppProps) {
+  const [selectedPlayerId, setSelectedPlayerId] = useState("");
 
   const [pin, setPin] = useState("");
   const [message, setMessage] = useState("");
 
-  const [loggedInPlayer, setLoggedInPlayer] =
-    useState<Player | null>(null);
+  const [loggedInPlayer, setLoggedInPlayer] = useState<Player | null>(null);
 
-  const [playerStats, setPlayerStats] =
-    useState<PlayerStats>(emptyStats);
+  const [playerStats, setPlayerStats] = useState<PlayerStats>(emptyStats);
 
   const [screen, setScreen] = useState<
-    | "login"
-    | "dashboard"
-    | "entry"
-    | "leaderboard"
-    | "history"
+    "login" | "dashboard" | "entry" | "leaderboard" | "history"
   >("login");
 
   const [score180, setScore180] = useState(0);
@@ -68,16 +60,12 @@ export default function DartLeagueApp({
   const [saving, setSaving] = useState(false);
 
   async function loadDashboardStats(playerId: number) {
-    const response = await fetch(
-      `/api/dashboard?playerId=${playerId}`
-    );
+    const response = await fetch(`/api/dashboard?playerId=${playerId}`);
 
     const result = await response.json();
 
     if (!response.ok || !result.success) {
-      setMessage(
-        result.message || "Could not load player statistics."
-      );
+      setMessage(result.message || "Could not load player statistics.");
 
       setPlayerStats(emptyStats);
       return;
@@ -86,9 +74,7 @@ export default function DartLeagueApp({
     setPlayerStats(result.stats);
   }
 
-  async function handleLogin(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage("");
 
@@ -156,25 +142,23 @@ export default function DartLeagueApp({
     const numericHighCheckout = Number(highCheckout || 0);
 
     if (
-  	numericHighScore !== 0 &&
-  	(numericHighScore < 101 ||
-    	  numericHighScore > 177)
+      numericHighScore !== 0 &&
+      (numericHighScore < leagueConfig.minHighScore ||
+        numericHighScore > leagueConfig.maxHighScore)
     ) {
       setMessage(
-        "High Score must be between 101 and 177."
+        `High Score must be between ${leagueConfig.minHighScore} and ${leagueConfig.maxHighScore}.`,
       );
-      return;
     }
 
     if (
       numericHighCheckout !== 0 &&
-      (numericHighCheckout < 100 ||
-        numericHighCheckout > 170)
+      (numericHighCheckout < leagueConfig.minHighCheckout ||
+        numericHighCheckout > leagueConfig.maxHighCheckout)
     ) {
       setMessage(
-        "High Checkout must be between 100 and 170."
+        `High Checkout must be between ${leagueConfig.minHighCheckout} and ${leagueConfig.maxHighCheckout}.`,
       );
-      return;
     }
 
     if (
@@ -185,9 +169,7 @@ export default function DartLeagueApp({
       numericHighScore === 0 &&
       numericHighCheckout === 0
     ) {
-      setMessage(
-        "Enter at least one statistic before saving."
-      );
+      setMessage("Enter at least one statistic before saving.");
       return;
     }
 
@@ -201,22 +183,20 @@ export default function DartLeagueApp({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-	  playerId: loggedInPlayer.id,
-	  score180,
-	  score140,
-	  score171,
-	  score133,
-	  highScore: numericHighScore,
-	  highCheckout: numericHighCheckout,
-	}),
+          playerId: loggedInPlayer.id,
+          score180,
+          score140,
+          score171,
+          score133,
+          highScore: numericHighScore,
+          highCheckout: numericHighCheckout,
+        }),
       });
 
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        setMessage(
-          result.message || "The stats could not be saved."
-        );
+        setMessage(result.message || "The stats could not be saved.");
         return;
       }
 
@@ -250,23 +230,16 @@ export default function DartLeagueApp({
   if (screen === "login") {
     return (
       <section className="w-full max-w-md rounded-3xl bg-slate-900 p-8 text-white shadow-2xl">
-        <div className="mb-3 text-center text-6xl">
-          🎯
-        </div>
+        <div className="mb-3 text-center text-6xl">🎯</div>
 
-        <h1 className="text-center text-3xl font-bold">
-          CR Wed Darts
-        </h1>
+        <h1 className="text-center text-3xl font-bold">{leagueConfig.name}</h1>
 
         <p className="mt-2 text-center text-slate-400">
           Select your name and enter your PIN
         </p>
 
         <form onSubmit={handleLogin} className="mt-8">
-          <label
-            htmlFor="player"
-            className="mb-2 block font-semibold"
-          >
+          <label htmlFor="player" className="mb-2 block font-semibold">
             Player
           </label>
 
@@ -288,10 +261,7 @@ export default function DartLeagueApp({
             ))}
           </select>
 
-          <label
-            htmlFor="pin"
-            className="mb-2 mt-5 block font-semibold"
-          >
+          <label htmlFor="pin" className="mb-2 mt-5 block font-semibold">
             PIN
           </label>
 
@@ -333,170 +303,135 @@ export default function DartLeagueApp({
           TONIGHT&apos;S MATCH
         </p>
 
-        <h1 className="mt-2 text-3xl font-bold">
-          Enter Stats
-        </h1>
+        <h1 className="mt-2 text-3xl font-bold">Enter Stats</h1>
 
-        <p className="mt-1 text-slate-400">
-          Player: {loggedInPlayer.name}
-        </p>
-	
-	<div className="mt-7 grid grid-cols-2 gap-3">
-        <div className="rounded-2xl bg-slate-800 p-4">
+        <p className="mt-1 text-slate-400">Player: {loggedInPlayer.name}</p>
 
-  <p className="text-center text-lg font-semibold">
-    180s
-  </p>
+        <div className="mt-7 grid grid-cols-2 gap-3">
+          <div className="rounded-2xl bg-slate-800 p-4">
+            <p className="text-center text-lg font-semibold">180s</p>
 
-  <div className="mt-4 flex items-center justify-between items-center gap-2">
-    <button
-      type="button"
-      onClick={() =>
-        setScore180(Math.max(0, score180 - 1))
-      }
-      className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
-    >
-      −
-    </button>
+            <div className="mt-4 flex items-center justify-between items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setScore180(Math.max(0, score180 - 1))}
+                className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
+              >
+                −
+              </button>
 
-    <span className="text-center text-3xl font-bold">
-      {score180}
-    </span>
+              <span className="text-center text-3xl font-bold">{score180}</span>
 
-    <button
-      type="button"
-      onClick={() => setScore180(score180 + 1)}
-      className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
-    >
-      +
-    </button>
-  </div>
-</div>
+              <button
+                type="button"
+                onClick={() => setScore180(score180 + 1)}
+                className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
+              >
+                +
+              </button>
+            </div>
+          </div>
 
-<div className="rounded-2xl bg-slate-800 p-4">
-  <p className="text-center text-lg font-semibold">
-    140s
-  </p>
+          <div className="rounded-2xl bg-slate-800 p-4">
+            <p className="text-center text-lg font-semibold">140s</p>
 
-  <div className="mt-4 flex items-center justify-between items-center gap-2">
-    <button
-      type="button"
-      onClick={() =>
-        setScore140(Math.max(0, score140 - 1))
-      }
-      className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
-    >
-      −
-    </button>
+            <div className="mt-4 flex items-center justify-between items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setScore140(Math.max(0, score140 - 1))}
+                className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
+              >
+                −
+              </button>
 
-    <span className="text-center text-3xl font-bold">
-      {score140}
-    </span>
+              <span className="text-center text-3xl font-bold">{score140}</span>
 
-    <button
-      type="button"
-      onClick={() => setScore140(score140 + 1)}
-      className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
-    >
-      +
-    </button>
-  </div>
-</div>
+              <button
+                type="button"
+                onClick={() => setScore140(score140 + 1)}
+                className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
+              >
+                +
+              </button>
+            </div>
+          </div>
 
-<div className="rounded-2xl bg-slate-800 p-4">
-  <p className="text-center text-lg font-semibold">
-    171s
-  </p>
+          <div className="rounded-2xl bg-slate-800 p-4">
+            <p className="text-center text-lg font-semibold">171s</p>
 
-  <div className="mt-4 flex items-center justify-between items-center gap-2">
-    <button
-      type="button"
-      onClick={() =>
-        setScore171(Math.max(0, score171 - 1))
-      }
-      className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
-    >
-      −
-    </button>
+            <div className="mt-4 flex items-center justify-between items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setScore171(Math.max(0, score171 - 1))}
+                className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
+              >
+                −
+              </button>
 
-    <span className="text-center text-3xl font-bold">
-      {score171}
-    </span>
+              <span className="text-center text-3xl font-bold">{score171}</span>
 
-    <button
-      type="button"
-      onClick={() =>
-        setScore171(score171 + 1)
-      }
-      className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
-    >
-      +
-    </button>
-  </div>
-</div>
+              <button
+                type="button"
+                onClick={() => setScore171(score171 + 1)}
+                className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
+              >
+                +
+              </button>
+            </div>
+          </div>
 
-<div className="rounded-2xl bg-slate-800 p-4">
-  <p className="text-center text-lg font-semibold">
-    133s
-  </p>
+          <div className="rounded-2xl bg-slate-800 p-4">
+            <p className="text-center text-lg font-semibold">133s</p>
 
-  <div className="mt-4 flex items-center justify-between items-center gap-2">
-    <button
-      type="button"
-      onClick={() =>
-        setScore133(Math.max(0, score133 - 1))
-      }
-      className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
-    >
-      −
-    </button>
+            <div className="mt-4 flex items-center justify-between items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setScore133(Math.max(0, score133 - 1))}
+                className="h-11 w-11 rounded-xl bg-slate-700 text-2xl font-bold"
+              >
+                −
+              </button>
 
-    <span className="text-center text-3xl font-bold">
-      {score133}
-    </span>
+              <span className="text-center text-3xl font-bold">{score133}</span>
 
-    <button
-      type="button"
-      onClick={() =>
-        setScore133(score133 + 1)
-      }
-      className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
-    >
-      +
-    </button>
-  </div>
-</div>
-</div>
+              <button
+                type="button"
+                onClick={() => setScore133(score133 + 1)}
+                className="h-11 w-11 rounded-xl bg-red-600 text-2xl font-bold"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+
         <label className="mb-2 mt-5 block font-semibold">
-          High Score (100-177)
+          High Score ({leagueConfig.minHighScore}-{leagueConfig.maxHighScore})
         </label>
 
         <input
           type="number"
-          min="100"
-          max="177"
+          min={leagueConfig.minHighScore}
+          max={leagueConfig.maxHighScore}
           inputMode="numeric"
           value={highScore}
-          onChange={(event) =>
-            setHighScore(event.target.value)
-          }
+          onChange={(event) => setHighScore(event.target.value)}
           placeholder="Example: 177"
           className="w-full rounded-xl border border-slate-600 bg-slate-800 p-4 text-xl"
         />
 
         <label className="mb-2 mt-5 block font-semibold">
-          High Checkout (100-170)
+          High Checkout ({leagueConfig.minHighCheckout}-
+          {leagueConfig.maxHighCheckout})
         </label>
 
         <input
           type="number"
-          min="100"
-          max="170"
+          min={leagueConfig.minHighCheckout}
+          max={leagueConfig.maxHighCheckout}
           inputMode="numeric"
           value={highCheckout}
-          onChange={(event) =>
-            setHighCheckout(event.target.value)
-          }
+          onChange={(event) => setHighCheckout(event.target.value)}
           placeholder="Example: 112"
           className="w-full rounded-xl border border-slate-600 bg-slate-800 p-4 text-xl"
         />
@@ -530,36 +465,30 @@ export default function DartLeagueApp({
     );
   }
 
-if (
-  screen === "leaderboard" &&
-  loggedInPlayer
-) {
-  return (
-    <Leaderboard
-      currentPlayerId={loggedInPlayer.id}
-      onBack={() => {
-        setMessage("");
-        setScreen("dashboard");
-      }}
-    />
-  );
-}
+  if (screen === "leaderboard" && loggedInPlayer) {
+    return (
+      <Leaderboard
+        currentPlayerId={loggedInPlayer.id}
+        onBack={() => {
+          setMessage("");
+          setScreen("dashboard");
+        }}
+      />
+    );
+  }
 
-if (
-  screen === "history" &&
-  loggedInPlayer
-) {
-  return (
-    <MatchHistory
-      playerId={loggedInPlayer.id}
-      playerName={loggedInPlayer.name}
-      onBack={() => {
-        setMessage("");
-        setScreen("dashboard");
-      }}
-    />
-  );
-}
+  if (screen === "history" && loggedInPlayer) {
+    return (
+      <MatchHistory
+        playerId={loggedInPlayer.id}
+        playerName={loggedInPlayer.name}
+        onBack={() => {
+          setMessage("");
+          setScreen("dashboard");
+        }}
+      />
+    );
+  }
 
   if (!loggedInPlayer) {
     return null;
@@ -570,7 +499,7 @@ if (
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-bold tracking-widest text-red-500">
-            CR WED DARTS
+            {leagueConfig.name.toUpperCase()}
           </p>
 
           <h1 className="mt-2 text-3xl font-bold">
@@ -585,40 +514,20 @@ if (
         <div className="text-6xl">🎯</div>
       </div>
 
-      <h2 className="mt-8 text-xl font-bold">
-        Season Statistics
-      </h2>
+      <h2 className="mt-8 text-xl font-bold">Season Statistics</h2>
 
       <div className="mt-4 grid grid-cols-2 gap-3">
-  	<StatCard
-    	  value={playerStats.total180s}
-    	  label="180s"
-  	/>
+        <StatCard value={playerStats.total180s} label="180s" />
 
-  	<StatCard
-    	  value={playerStats.total140s}
-    	  label="140s"
-  	/>
+        <StatCard value={playerStats.total140s} label="140s" />
 
-  	<StatCard
-    	  value={playerStats.total171s}
-    	  label="171s"
-  	/>
+        <StatCard value={playerStats.total171s} label="171s" />
 
-  	<StatCard
-    	  value={playerStats.total133s}
-    	  label="133s"
-  	/>
+        <StatCard value={playerStats.total133s} label="133s" />
 
-  	<StatCard
-    	  value={playerStats.highScore}
-    	  label="High Score"
-  	/>
+        <StatCard value={playerStats.highScore} label="High Score" />
 
-  	<StatCard
-    	  value={playerStats.highCheckout}
-    	  label="High Checkout"
-  	/>
+        <StatCard value={playerStats.highCheckout} label="High Checkout" />
       </div>
 
       <div className="mt-4 flex justify-between rounded-xl bg-slate-950 p-4 text-slate-300">
@@ -641,26 +550,26 @@ if (
       </button>
 
       <button
-  	type="button"
-  	onClick={() => {
-    	  setMessage("");
-    	  setScreen("leaderboard");
-  	}}
+        type="button"
+        onClick={() => {
+          setMessage("");
+          setScreen("leaderboard");
+        }}
         className="mt-3 w-full rounded-xl border border-slate-600 bg-slate-800 p-4 font-semibold"
       >
         View Leaderboard
       </button>
 
-	<button
-	  type="button"
-	  onClick={() => {
-	    setMessage("");
-	    setScreen("history");
-	  }}
-	  className="mt-3 w-full rounded-xl border border-slate-600 bg-slate-800 p-4 font-semibold"
-	>
-	  View Match History
-	</button>
+      <button
+        type="button"
+        onClick={() => {
+          setMessage("");
+          setScreen("history");
+        }}
+        className="mt-3 w-full rounded-xl border border-slate-600 bg-slate-800 p-4 font-semibold"
+      >
+        View Match History
+      </button>
 
       <button
         type="button"
@@ -673,20 +582,12 @@ if (
   );
 }
 
-function StatCard({
-  value,
-  label,
-}: {
-  value: number;
-  label: string;
-}) {
+function StatCard({ value, label }: { value: number; label: string }) {
   return (
     <div className="rounded-2xl border border-slate-700 bg-slate-800 p-5 text-center">
       <p className="text-4xl font-bold">{value}</p>
 
-      <p className="mt-2 text-sm text-slate-400">
-        {label}
-      </p>
+      <p className="mt-2 text-sm text-slate-400">{label}</p>
     </div>
   );
 }

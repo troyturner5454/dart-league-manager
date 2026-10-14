@@ -1,5 +1,6 @@
 "use client";
 
+import { leagueConfig } from "../../lib/leagueConfig";
 import { FormEvent, useState } from "react";
 import AdminPlayerList from "./AdminPlayerList";
 import AdminMatchHistory from "./AdminMatchHistory";
@@ -9,6 +10,9 @@ export default function AdminLogin() {
   const [message, setMessage] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
+  {
+    leagueConfig.name.toUpperCase();
+  }
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,7 +63,7 @@ export default function AdminLogin() {
     return (
       <section className="w-full max-w-lg rounded-3xl bg-slate-900 p-7 text-white shadow-2xl">
         <p className="text-sm font-bold tracking-widest text-red-500">
-          CR WED DARTS
+          {leagueConfig.name.toUpperCase()}
         </p>
 
         <h1 className="mt-2 text-3xl font-bold">Admin Dashboard</h1>
@@ -122,7 +126,7 @@ export default function AdminLogin() {
       <div className="text-center text-6xl">🔐</div>
 
       <h1 className="mt-3 text-center text-3xl font-bold">
-        CR Wed Darts Admin
+        {leagueConfig.name.toUpperCase()} Admin
       </h1>
 
       <p className="mt-2 text-center text-slate-400">

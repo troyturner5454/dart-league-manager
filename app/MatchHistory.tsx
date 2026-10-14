@@ -1,5 +1,5 @@
 "use client";
-
+import { leagueConfig } from "../lib/leagueConfig";
 import { useEffect, useState } from "react";
 
 type HistoryEntry = {
@@ -25,9 +25,7 @@ export default function MatchHistory({
   playerName,
   onBack,
 }: MatchHistoryProps) {
-  const [history, setHistory] = useState<HistoryEntry[]>(
-    []
-  );
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
@@ -37,28 +35,20 @@ export default function MatchHistory({
     setMessage("");
 
     try {
-      const response = await fetch(
-        `/api/history?playerId=${playerId}`,
-        {
-          cache: "no-store",
-        }
-      );
+      const response = await fetch(`/api/history?playerId=${playerId}`, {
+        cache: "no-store",
+      });
 
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        setMessage(
-          result.message ||
-            "Match history could not be loaded."
-        );
+        setMessage(result.message || "Match history could not be loaded.");
         return;
       }
 
       setHistory(result.history || []);
     } catch {
-      setMessage(
-        "Could not connect to the match history service."
-      );
+      setMessage("Could not connect to the match history service.");
     } finally {
       setLoading(false);
     }
@@ -69,9 +59,7 @@ export default function MatchHistory({
   }, [playerId]);
 
   function formatDate(dateValue: string) {
-    const date = new Date(
-      `${dateValue}T12:00:00`
-    );
+    const date = new Date(`${dateValue}T12:00:00`);
 
     return date.toLocaleDateString("en-CA", {
       year: "numeric",
@@ -85,21 +73,15 @@ export default function MatchHistory({
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-bold tracking-widest text-red-500">
-            CR WED DARTS
+            {leagueConfig.name.toUpperCase()}
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold">
-            Match History
-          </h1>
+          <h1 className="mt-2 text-3xl font-bold">Match History</h1>
 
-          <p className="mt-1 text-slate-400">
-            Player: {playerName}
-          </p>
+          <p className="mt-1 text-slate-400">Player: {playerName}</p>
         </div>
 
-        <div className="text-5xl">
-          📋
-        </div>
+        <div className="text-5xl">📋</div>
       </div>
 
       <div className="mt-6 flex items-center justify-between">
@@ -128,63 +110,43 @@ export default function MatchHistory({
         </div>
       )}
 
-      {!loading &&
-        !message &&
-        history.length === 0 && (
-          <div className="mt-5 rounded-xl bg-slate-800 p-5 text-center text-slate-300">
-            No match-night statistics have been
-            recorded yet.
-          </div>
-        )}
+      {!loading && !message && history.length === 0 && (
+        <div className="mt-5 rounded-xl bg-slate-800 p-5 text-center text-slate-300">
+          No match-night statistics have been recorded yet.
+        </div>
+      )}
 
-      {!loading &&
-        !message &&
-        history.length > 0 && (
-          <div className="mt-5 space-y-4">
-            {history.map((entry) => (
-              <div
-                key={entry.id}
-                className="rounded-2xl border border-slate-700 bg-slate-800 p-5"
-              >
-                <h2 className="text-lg font-bold">
-                  {formatDate(entry.match_date)}
-                </h2>
+      {!loading && !message && history.length > 0 && (
+        <div className="mt-5 space-y-4">
+          {history.map((entry) => (
+            <div
+              key={entry.id}
+              className="rounded-2xl border border-slate-700 bg-slate-800 p-5"
+            >
+              <h2 className="text-lg font-bold">
+                {formatDate(entry.match_date)}
+              </h2>
 
-                <div className="mt-4 grid grid-cols-2 gap-3">
-                  <HistoryStat
-                    label="180s"
-                    value={entry.score180}
-                  />
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <HistoryStat label="180s" value={entry.score180} />
 
-                  <HistoryStat
-                    label="140s"
-                    value={entry.score140}
-                  />
+                <HistoryStat label="140s" value={entry.score140} />
 
-		  <HistoryStat
-		  label="171s"
-		  value={entry.score171}
-		  />
+                <HistoryStat label="171s" value={entry.score171} />
 
-		  <HistoryStat
-		  label="133s"
-		  value={entry.score133}
-		  />
+                <HistoryStat label="133s" value={entry.score133} />
 
-                  <HistoryStat
-                    label="High Score"
-                    value={entry.high_score}
-                  />
+                <HistoryStat label="High Score" value={entry.high_score} />
 
-                  <HistoryStat
-                    label="High Checkout"
-                    value={entry.high_checkout}
-                  />
-                </div>
+                <HistoryStat
+                  label="High Checkout"
+                  value={entry.high_checkout}
+                />
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
+      )}
 
       <button
         type="button"
@@ -197,22 +159,12 @@ export default function MatchHistory({
   );
 }
 
-function HistoryStat({
-  label,
-  value,
-}: {
-  label: string;
-  value: number;
-}) {
+function HistoryStat({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-xl bg-slate-950 p-3 text-center">
-      <p className="text-2xl font-bold">
-        {value || 0}
-      </p>
+      <p className="text-2xl font-bold">{value || 0}</p>
 
-      <p className="mt-1 text-xs text-slate-400">
-        {label}
-      </p>
+      <p className="mt-1 text-xs text-slate-400">{label}</p>
     </div>
   );
 }
