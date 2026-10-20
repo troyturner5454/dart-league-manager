@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Leaderboard from "./Leaderboard";
+import ChangePin from "./ChangePin";
 import MatchHistory from "./MatchHistory";
 import { leagueConfig } from "../lib/leagueConfig";
 
@@ -46,7 +47,7 @@ export default function DartLeagueApp({ players }: DartLeagueAppProps) {
   const [playerStats, setPlayerStats] = useState<PlayerStats>(emptyStats);
 
   const [screen, setScreen] = useState<
-    "login" | "dashboard" | "entry" | "leaderboard" | "history"
+    "login" | "dashboard" | "entry" | "leaderboard" | "history" | "changepin"
   >("login");
 
   const [score180, setScore180] = useState(0);
@@ -478,6 +479,18 @@ export default function DartLeagueApp({ players }: DartLeagueAppProps) {
     );
   }
 
+  if (screen === "changepin" && loggedInPlayer) {
+    return (
+      <ChangePin
+        playerName={loggedInPlayer.name}
+        onBack={(doneMessage) => {
+          setMessage(doneMessage || "");
+          setScreen("dashboard");
+        }}
+      />
+    );
+  }
+
   if (screen === "history" && loggedInPlayer) {
     return (
       <MatchHistory
@@ -570,6 +583,17 @@ export default function DartLeagueApp({ players }: DartLeagueAppProps) {
         className="mt-3 w-full rounded-xl border border-slate-600 bg-slate-800 p-4 font-semibold"
       >
         View Match History
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          setMessage("");
+          setScreen("changepin");
+        }}
+        className="mt-3 w-full rounded-xl border border-slate-600 bg-slate-800 p-4 font-semibold"
+      >
+        Change My PIN
       </button>
 
       <button
