@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { supabase } from "../../../lib/supabase";
+import { supabaseAdmin } from "../../../lib/supabaseAdmin";
+import { getSessionPlayerId } from "../../../lib/playerSession";
 import { leagueConfig } from "../../../lib/leagueConfig";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const playerId = Number(body.playerId);
+    const playerId = await getSessionPlayerId();
     const score180 = Number(body.score180);
     const score140 = Number(body.score140);
     const score171 = Number(body.score171);
@@ -14,8 +15,8 @@ export async function POST(request: Request) {
     const highCheckout = Number(body.highCheckout);
     if (!playerId) {
       return NextResponse.json(
-        { success: false, message: "A valid player is required." },
-        { status: 400 },
+        { success: false, message: "Please log in again." },
+        { status: 401 },
       );
     }
     if (
@@ -41,7 +42,7 @@ export async function POST(request: Request) {
       month: "2-digit",
       day: "2-digit",
     }).format(new Date());
-    const { error } = await supabase.rpc("merge_nightly_stats", {
+    const { error } = await supabaseAdmin.rpc("merge_nightly_stats", {
       p_player_id: playerId,
       p_match_date: matchDate,
       p_score180: score180,

@@ -9,6 +9,7 @@ import {
 import {
   supabaseAdmin,
 } from "../../../../lib/supabaseAdmin";
+import { hashPin, pinFormatOk, PIN_FORMAT_MESSAGE } from "../../../../lib/pin";
 
 export async function POST(
   request: Request
@@ -52,11 +53,20 @@ export async function POST(
       );
     }
 
+    if (!pinFormatOk(pin)) {
+      return NextResponse.json(
+        { success: false, message: PIN_FORMAT_MESSAGE },
+        { status: 400 }
+      );
+    }
+
     const { error } =
       await supabaseAdmin
         .from("players")
         .update({
-          pin,
+          pin: hashPin(pin),
+          failed_attempts: 0,
+          locked_until: null,
         })
         .eq("id", playerId);
 

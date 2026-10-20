@@ -219,6 +219,7 @@ export default function DartLeagueApp({ players }: DartLeagueAppProps) {
   }
 
   function handleLogout() {
+    fetch("/api/logout", { method: "POST" }).catch(() => {});
     setLoggedInPlayer(null);
     setSelectedPlayerId("");
     setPin("");

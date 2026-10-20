@@ -1,27 +1,25 @@
 import { NextResponse } from "next/server";
-import { supabase } from "../../../lib/supabase";
+import { supabaseAdmin } from "../../../lib/supabaseAdmin";
+import { getSessionPlayerId } from "../../../lib/playerSession";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const url = new URL(request.url);
 
-    const playerId = Number(
-      url.searchParams.get("playerId")
-    );
+    const playerId = await getSessionPlayerId();
 
     if (!playerId) {
       return NextResponse.json(
         {
           success: false,
-          message: "A valid player ID is required.",
+          message: "Please log in again.",
         },
         {
-          status: 400,
+          status: 401,
         }
       );
     }
 
-    const { data: history, error } = await supabase
+    const { data: history, error } = await supabaseAdmin
       .from("stats")
       .select(
   	"id, match_date, score180, score140, score171, score133, high_score, high_checkout, created_at"

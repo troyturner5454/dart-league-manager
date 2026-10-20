@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "../../../lib/supabase";
+import { supabaseAdmin } from "../../../lib/supabaseAdmin";
 
 type PlayerRow = {
   id: number;
@@ -19,7 +19,7 @@ type StatRow = {
 
 export async function GET() {
   const { data: players, error: playersError } =
-    await supabase
+    await supabaseAdmin
       .from("players")
       .select("id, name, team")
       .eq("active", true)
@@ -36,7 +36,7 @@ export async function GET() {
   }
 
   const { data: stats, error: statsError } =
-    await supabase
+    await supabaseAdmin
       .from("stats")
       .select(
         "player_id, score180, score140, score171, score133, high_score, high_checkout"

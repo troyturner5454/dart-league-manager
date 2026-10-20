@@ -1,10 +1,10 @@
-import { supabase } from "../lib/supabase";
+import { supabaseAdmin } from "../lib/supabaseAdmin";
 import DartLeagueApp from "./DartLeagueApp";
 
 export const instant = false;
 
 export default async function Home() {
-  const { data: players, error } = await supabase
+  const { data: players, error } = await supabaseAdmin
     .from("players")
     .select("id, name, team")
     .eq("active", true)
