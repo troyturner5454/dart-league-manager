@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Leaderboard from "./Leaderboard";
 import ChangePin from "./ChangePin";
+import InstallApp from "./InstallApp";
 import MatchHistory from "./MatchHistory";
 import { leagueConfig } from "../lib/leagueConfig";
 
@@ -294,6 +295,8 @@ export default function DartLeagueApp({ players }: DartLeagueAppProps) {
             {loading ? "Signing in..." : "Login"}
           </button>
         </form>
+
+        <InstallApp />
       </section>
     );
   }
@@ -595,6 +598,8 @@ export default function DartLeagueApp({ players }: DartLeagueAppProps) {
       >
         Change My PIN
       </button>
+
+      <InstallApp />
 
       <button
         type="button"
